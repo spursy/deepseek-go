@@ -101,7 +101,12 @@ func (rb *AuthedRequest) BuildStream(ctx context.Context) (*http.Request, error)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
-	req.Header.Set("Authorization", "Bearer "+rb.AuthToken)
+
+	if rb.ApiType == ApiTypeAzure {
+		req.Header.Set("api-key", rb.AuthToken)
+	} else {
+		req.Header.Set("Authorization", "Bearer "+rb.AuthToken)
+	}
 	req.Header.Set("cache-control", "no-cache")
 	req.Header.Set("Content-Type", "application/json")
 	return req, nil

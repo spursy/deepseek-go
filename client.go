@@ -58,6 +58,7 @@ func (c *Client) CreateChatCompletionStream(
 		SetBaseURL(c.BaseURL).
 		SetPath("chat/completions").
 		SetBodyFromStruct(request).
+		SetApiType(c.ApiType).
 		BuildStream(ctx)
 
 	if err != nil {
