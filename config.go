@@ -2,6 +2,7 @@ package deepseek
 
 import (
 	"fmt"
+	utils "github.com/cohesion-org/deepseek-go/utils"
 	"net/http"
 	"net/url"
 	"time"
@@ -20,6 +21,7 @@ type Client struct {
 	AuthToken string        // The authentication token for the API
 	BaseURL   string        // The base URL for the API
 	Timeout   time.Duration // The timeout for the current Client
+	ApiType   utils.ApiType
 }
 
 // NewClient creates a new client with an authentication token and an optional custom baseURL.
@@ -43,6 +45,7 @@ func NewClient(AuthToken string, baseURL ...string) *Client {
 	return &Client{
 		AuthToken: AuthToken,
 		BaseURL:   url,
+		ApiType:   utils.ApiTypeDeepSeek,
 	}
 }
 
@@ -73,6 +76,13 @@ func NewClientWithOptions(authToken string, opts ...Option) (*Client, error) {
 func WithBaseURL(url string) Option {
 	return func(c *Client) error {
 		c.BaseURL = url
+		return nil
+	}
+}
+
+func WithApiType(apiType utils.ApiType) Option {
+	return func(c *Client) error {
+		c.ApiType = apiType
 		return nil
 	}
 }

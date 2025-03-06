@@ -14,12 +14,21 @@ type AuthedRequest struct {
 	BaseURL   string
 	Path      string
 	Body      []byte
+	ApiType   ApiType
 }
+
+type ApiType string
+
+const (
+	ApiTypeAzure    ApiType = "Azure"
+	ApiTypeDeepSeek ApiType = "DeepSeek"
+)
 
 // AuthedRequestBuilder is an interface for building authenticated requests.
 type AuthedRequestBuilder interface {
 	SetBaseURL(string) *AuthedRequest
 	SetPath(string) *AuthedRequest
+	SetApiType(string) *AuthedRequest
 	SetBodyFromStruct(interface{}) *AuthedRequest
 	Build(context.Context) (*http.Request, error)
 }
@@ -40,6 +49,11 @@ func (rb *AuthedRequest) SetBaseURL(BaseURL string) *AuthedRequest {
 // SetPath sets the path for the request.
 func (rb *AuthedRequest) SetPath(path string) *AuthedRequest {
 	rb.Path = path
+	return rb
+}
+
+func (rb *AuthedRequest) SetApiType(apiType ApiType) *AuthedRequest {
+	rb.ApiType = apiType
 	return rb
 }
 
@@ -65,7 +79,12 @@ func (rb *AuthedRequest) Build(ctx context.Context) (*http.Request, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
-	req.Header.Set("Authorization", "Bearer "+rb.AuthToken)
+
+	if rb.ApiType == ApiTypeAzure {
+		req.Header.Set("api-key", rb.AuthToken)
+	} else {
+		req.Header.Set("Authorization", "Bearer "+rb.AuthToken)
+	}
 	req.Header.Set("Content-Type", "application/json")
 
 	return req, nil

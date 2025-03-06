@@ -70,7 +70,7 @@ type StreamChatCompletionResponse struct {
 // StreamChatCompletionRequest represents the request body for a streaming chat completion API call.
 type StreamChatCompletionRequest struct {
 	Stream           bool                    `json:"stream,omitempty"`            //Comments: Defaults to true, since it's "STREAM"
-	StreamOptions    *StreamOptions           `json:"stream_options,omitempty"`    // Optional: Stream options for the request.
+	StreamOptions    *StreamOptions          `json:"stream_options,omitempty"`    // Optional: Stream options for the request.
 	Model            string                  `json:"model"`                       // Required: Model ID, e.g., "deepseek-chat"
 	Messages         []ChatCompletionMessage `json:"messages"`                    // Required: List of messages
 	FrequencyPenalty float32                 `json:"frequency_penalty,omitempty"` // Optional: Frequency penalty, >= -2 and <= 2

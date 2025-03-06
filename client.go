@@ -21,6 +21,7 @@ func (c *Client) CreateChatCompletion(
 		SetBaseURL(c.BaseURL).
 		SetPath("chat/completions").
 		SetBodyFromStruct(request).
+		SetApiType(c.ApiType).
 		Build(ctx)
 
 	if err != nil {
