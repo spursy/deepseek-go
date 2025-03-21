@@ -12,9 +12,9 @@ import (
 func (c *Client) CreateChatCompletion(
 	ctx context.Context,
 	request *ChatCompletionRequest,
-) (*ChatCompletionResponse, error) {
+) (*ChatCompletionResponse, int, error) {
 	if request == nil {
-		return nil, fmt.Errorf("request cannot be nil")
+		return nil, 0, fmt.Errorf("request cannot be nil")
 	}
 
 	req, err := utils.NewRequestBuilder(c.AuthToken).
@@ -25,33 +25,33 @@ func (c *Client) CreateChatCompletion(
 		Build(ctx)
 
 	if err != nil {
-		return nil, fmt.Errorf("error building request: %w", err)
+		return nil, 0, fmt.Errorf("error building request: %w", err)
 	}
 	resp, err := HandleSendChatCompletionRequest(*c, req)
 
 	if err != nil {
-		return nil, fmt.Errorf("error sending request: %w", err)
+		return nil, 0, fmt.Errorf("error sending request: %w", err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
-		return nil, HandleAPIError(resp)
+		return nil, 0, HandleAPIError(resp)
 	}
 
 	updatedResp, err := HandleChatCompletionResponse(resp)
 
 	if err != nil {
-		return nil, fmt.Errorf("error decoding response: %w", err)
+		return nil, 0, fmt.Errorf("error decoding response: %w", err)
 	}
 
-	return updatedResp, err
+	return updatedResp, resp.StatusCode, err
 }
 
 // CreateChatCompletionStream sends a chat completion request with stream = true and returns the delta
 func (c *Client) CreateChatCompletionStream(
 	ctx context.Context,
 	request *StreamChatCompletionRequest,
-) (ChatCompletionStream, error) {
+) (ChatCompletionStream, int, error) {
 
 	request.Stream = true
 	req, err := utils.NewRequestBuilder(c.AuthToken).
@@ -62,16 +62,16 @@ func (c *Client) CreateChatCompletionStream(
 		BuildStream(ctx)
 
 	if err != nil {
-		return nil, fmt.Errorf("error building request: %w", err)
+		return nil, 0, fmt.Errorf("error building request: %w", err)
 	}
 
 	resp, err := HandleSendChatCompletionRequest(*c, req)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 
 	if resp.StatusCode >= 400 {
-		return nil, HandleAPIError(resp)
+		return nil, resp.StatusCode, HandleAPIError(resp)
 	}
 
 	ctx, cancel := context.WithCancel(ctx)
@@ -81,7 +81,7 @@ func (c *Client) CreateChatCompletionStream(
 		resp:   resp,
 		reader: bufio.NewReader(resp.Body),
 	}
-	return stream, nil
+	return stream, resp.StatusCode, nil
 }
 
 // CreateFIMCompletion is a beta feature. It sends a FIM completion request and returns the generated response.
