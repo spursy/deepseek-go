@@ -35,7 +35,7 @@ func (c *Client) CreateChatCompletion(
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
-		return nil, 0, HandleAPIError(resp)
+		return nil, resp.StatusCode, HandleAPIError(resp)
 	}
 
 	updatedResp, err := HandleChatCompletionResponse(resp)
