@@ -74,7 +74,7 @@ func TestChatPrefixCompletion(t *testing.T) {
 			ctx, cancel := context.WithTimeout(context.Background(), config.TestTimeout)
 			defer cancel()
 
-			resp, _, err := client.CreateChatCompletion(ctx, tt.req)
+			resp, _, _, err := client.CreateChatCompletion(ctx, tt.req)
 			if tt.wantErr {
 				assert.Error(t, err)
 				assert.Nil(t, resp)

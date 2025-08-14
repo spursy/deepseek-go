@@ -38,7 +38,7 @@ func ExternalProviders() {
 
 	// Send the request and handle the response
 	ctx := context.Background()
-	response, _, err := client.CreateChatCompletion(ctx, request)
+	response, _, _, err := client.CreateChatCompletion(ctx, request)
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}

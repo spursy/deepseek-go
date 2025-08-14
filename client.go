@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"context"
 	"fmt"
+	"net/http"
 
 	utils "github.com/cohesion-org/deepseek-go/utils"
 )
@@ -12,9 +13,9 @@ import (
 func (c *Client) CreateChatCompletion(
 	ctx context.Context,
 	request *ChatCompletionRequest,
-) (*ChatCompletionResponse, int, error) {
+) (*ChatCompletionResponse, int, http.Header, error) {
 	if request == nil {
-		return nil, 0, fmt.Errorf("request cannot be nil")
+		return nil, 0, make(http.Header), fmt.Errorf("request cannot be nil")
 	}
 
 	req, err := utils.NewRequestBuilder(c.AuthToken).
@@ -25,26 +26,26 @@ func (c *Client) CreateChatCompletion(
 		Build(ctx)
 
 	if err != nil {
-		return nil, 0, fmt.Errorf("error building request: %w", err)
+		return nil, 0, make(http.Header), fmt.Errorf("error building request: %w", err)
 	}
 	resp, err := HandleSendChatCompletionRequest(*c, req)
 
 	if err != nil {
-		return nil, 0, fmt.Errorf("error sending request: %w", err)
+		return nil, 0, make(http.Header), fmt.Errorf("error sending request: %w", err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
-		return nil, resp.StatusCode, HandleAPIError(resp)
+		return nil, resp.StatusCode, resp.Header, HandleAPIError(resp)
 	}
 
 	updatedResp, err := HandleChatCompletionResponse(resp)
 
 	if err != nil {
-		return nil, 0, fmt.Errorf("error decoding response: %w", err)
+		return nil, 0, resp.Header, fmt.Errorf("error decoding response: %w", err)
 	}
 
-	return updatedResp, resp.StatusCode, err
+	return updatedResp, resp.StatusCode, resp.Header, err
 }
 
 // CreateChatCompletionStream sends a chat completion request with stream = true and returns the delta

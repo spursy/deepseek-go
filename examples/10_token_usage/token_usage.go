@@ -23,7 +23,7 @@ func EstimateTokens() {
 
 	tokens := deepseek.EstimateTokensFromMessages(request)
 	fmt.Println("Estimated tokens for the request is: ", tokens.EstimatedTokens)
-	response, _, err := client.CreateChatCompletion(ctx, request)
+	response, _, _, err := client.CreateChatCompletion(ctx, request)
 
 	if err != nil {
 		log.Fatalf("error: %v", err)

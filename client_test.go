@@ -15,7 +15,7 @@ func TestCreateChatCompletion_NilRequest(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	_, _, err = client.CreateChatCompletion(context.Background(), nil)
+	_, _, _, err = client.CreateChatCompletion(context.Background(), nil)
 	if err == nil {
 		t.Fatal("expected error for nil request")
 	}
@@ -36,7 +36,7 @@ func TestCreateChatCompletion_ErrorHandling(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	_, _, err = client.CreateChatCompletion(context.Background(), &deepseek.ChatCompletionRequest{})
+	_, _, _, err = client.CreateChatCompletion(context.Background(), &deepseek.ChatCompletionRequest{})
 	if err == nil {
 		t.Fatal("expected error, got nil")
 	}
