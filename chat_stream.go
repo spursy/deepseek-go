@@ -83,6 +83,11 @@ type StreamChatCompletionRequest struct {
 	Tools            []Tool                  `json:"tools,omitempty"`             // Optional: List of tools
 	LogProbs         bool                    `json:"logprobs,omitempty"`          // Optional: Enable log probabilities
 	TopLogProbs      int                     `json:"top_logprobs,omitempty"`      // Optional: Number of top tokens with log probabilities, <= 20
+	Thinking         *ThinkMode              `json:"thinking,omitempty"`
+}
+
+type ThinkMode struct {
+	Type string `json:"type,omitempty"`
 }
 
 // Recv receives the next response from the stream.
