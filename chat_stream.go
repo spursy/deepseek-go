@@ -83,7 +83,9 @@ type StreamChatCompletionRequest struct {
 	Tools            []Tool                  `json:"tools,omitempty"`             // Optional: List of tools
 	LogProbs         bool                    `json:"logprobs,omitempty"`          // Optional: Enable log probabilities
 	TopLogProbs      int                     `json:"top_logprobs,omitempty"`      // Optional: Number of top tokens with log probabilities, <= 20
-	Thinking         *ThinkMode              `json:"thinking,omitempty"`
+	Thinking         *ThinkMode              `json:"thinking,omitempty"`          // Optional: For volc engine deepseek v3x
+	EnableThinking   *bool                   `json:"enable_thinking,omitempty"`   // Optional: For sillicon deepseek v3x
+	ThinkingBudget   *int                    `json:"thinking_budget,omitempty"`   // Optional: For sillicon deepseek v3x
 }
 
 type ThinkMode struct {

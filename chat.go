@@ -72,7 +72,7 @@ type ChatCompletionRequest struct {
 	LogProbs         bool                    `json:"logprobs,omitempty"`          // Whether to return log probabilities of the most likely tokens (optional).
 	TopLogProbs      int                     `json:"top_logprobs,omitempty"`      // The number of top most likely tokens to return log probabilities for (optional).
 	JSONMode         bool                    `json:"json,omitempty"`              // [deepseek-go feature] Optional: Enable JSON mode. If you're using the JSON mode, please mention "json" anywhere in your prompt, and also include the JSON schema in the request.
-	Thinking         *ThinkMode              `json:"thinking,omitempty"`
-	EnableThinking   *bool                   `json:"enable_thinking,omitempty"`
-	ThinkingBudget   *int                    `json:"thinking_budget,omitempty"`
+	Thinking         *ThinkMode              `json:"thinking,omitempty"`          // Optional: For volc engine deepseek v3x
+	EnableThinking   *bool                   `json:"enable_thinking,omitempty"`   // Optional: For sillicon deepseek v3x
+	ThinkingBudget   *int                    `json:"thinking_budget,omitempty"`   // Optional: For sillicon deepseek v3x
 }
