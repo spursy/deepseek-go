@@ -74,5 +74,6 @@ type ChatCompletionRequest struct {
 	JSONMode         bool                    `json:"json,omitempty"`              // [deepseek-go feature] Optional: Enable JSON mode. If you're using the JSON mode, please mention "json" anywhere in your prompt, and also include the JSON schema in the request.
 	Thinking         *ThinkMode              `json:"thinking,omitempty"`          // Optional: For volc engine deepseek v3x
 	EnableThinking   *bool                   `json:"enable_thinking,omitempty"`   // Optional: For sillicon deepseek v3x
+	EnableSearch     *bool                   `json:"enable_search,omitempty"`     // Optional: For qwen search
 	ThinkingBudget   *int                    `json:"thinking_budget,omitempty"`   // Optional: For sillicon deepseek v3x
 }
