@@ -69,6 +69,18 @@ type TopLogprobToken struct {
 	Bytes   []int   `json:"bytes,omitempty"` // UTF-8 byte representation of the token. Can be nil.
 }
 
+type PromptTokensDetails struct {
+  CacheCreation *CacheCreation `json:"cache_creation,omitempty"`
+  CacheCreationInputTokens int `json:"cache_creation_input_tokens"` // Only for qwen model
+  CachedTokens int `json:"cached_tokens"` // Only for qwen model
+  CacheType string `json:"cache_type"` // Only for qwen model
+}
+
+type CacheCreation struct {
+  Ephemeral5mInputTokens int `json:"ephemeral_5m_input_tokens"`
+}
+
+
 // Usage represents token usage statistics.
 type Usage struct {
 	PromptTokens          int `json:"prompt_tokens"`            // Number of tokens used in the prompt.
@@ -76,9 +88,7 @@ type Usage struct {
 	TotalTokens           int `json:"total_tokens"`             // Total number of tokens used.
 	PromptCacheHitTokens  int `json:"prompt_cache_hit_tokens"`  // Number of tokens served from cache.
 	PromptCacheMissTokens int `json:"prompt_cache_miss_tokens"` // Number of tokens not served from cache.
-	CacheCreationInputTokens int `json:"cache_creation_input_tokens"` // Only for qwen model
-	CachedTokens int `json:"cached_tokens"` // Only for qwen model
-	CacheType string `json:"cache_type"` // Only for qwen model
+	PromptTokensDetails *PromptTokensDetails `json:"prompt_tokens_details,omitempty"` // Only for qwen model
 }
 
 // HandleChatCompletionResponse parses the response from the chat completion endpoint.
