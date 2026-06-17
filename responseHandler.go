@@ -76,6 +76,9 @@ type Usage struct {
 	TotalTokens           int `json:"total_tokens"`             // Total number of tokens used.
 	PromptCacheHitTokens  int `json:"prompt_cache_hit_tokens"`  // Number of tokens served from cache.
 	PromptCacheMissTokens int `json:"prompt_cache_miss_tokens"` // Number of tokens not served from cache.
+	CacheCreationInputTokens int `json:"cache_creation_input_tokens"` // Only for qwen model
+	CachedTokens int `json:"cached_tokens"` // Only for qwen model
+	CacheType int `json:"cache_type"` // Only for qwen model
 }
 
 // HandleChatCompletionResponse parses the response from the chat completion endpoint.

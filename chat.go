@@ -14,7 +14,7 @@ var (
 // ChatCompletionMessage represents a single message in a chat completion conversation.
 type ChatCompletionMessage struct {
 	Role             string `json:"role"`                        // The role of the message sender, e.g., "user", "assistant", "system".
-	Content          string `json:"content"`                     // The content of the message.
+	Content          any `json:"content"`                     // The content of the message.
 	Prefix           bool   `json:"prefix,omitempty"`            // The prefix of the message (optional) for Chat Prefix Completion [Beta Feature].
 	ReasoningContent string `json:"reasoning_content,omitempty"` // The reasoning content of the message (optional) when using the reasoner model with Chat Prefix Completion. When using this feature, the Prefix parameter must be set to true.
 	ToolCallID       string `json:"tool_call_id,omitempty"`      // Tool call that this message is responding to.

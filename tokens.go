@@ -1,6 +1,7 @@
 package deepseek
 
 import (
+	"encoding/json"
 	"unicode"
 )
 
@@ -43,7 +44,16 @@ func EstimateTokensFromMessages(messages *ChatCompletionRequest) *TokenEstimate 
 		totalTokens += 2 // Approximate tokens for role
 
 		// Add tokens for content
-		totalTokens += EstimateTokenCount(msg.Content).EstimatedTokens
+		targetContent := ""
+		switch v := msg.Content.(type) {
+		case string:
+			targetContent = string(v)
+		default:
+		    // 兜底
+			data, _ := json.Marshal(v)
+		    targetContent = string(data)
+		}
+		totalTokens += EstimateTokenCount(targetContent).EstimatedTokens
 	}
 
 	for _, tool := range messages.Tools {
